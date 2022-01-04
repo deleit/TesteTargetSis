@@ -6,10 +6,12 @@ class Program
 {
   static void Main(string[] args)
   {
+    Console.WriteLine("---------");
     PrimeiraQuestao(13);
     SegundaQuestao();
     TerceiraQuestao();
     QuartaQuestao();
+    QuintaQuestao();
   }
 
   static void PrimeiraQuestao(int indice)
@@ -30,44 +32,56 @@ class Program
   static void SegundaQuestao()
   {
     Console.WriteLine("Questão 2:");
-    Console.WriteLine("digite um número: ");
+    Console.WriteLine("Digite um número: ");
 
     var entrada = Console.ReadLine();
-    int numero = 0;
-    if (entrada != null)
-      numero = int.Parse(entrada);
+    long numero;
 
-    bool estaNaSequencia = false;
-
-    List<int> sequencia = new List<int>() { 0, 1 };
-
-    if (numero == 0 || numero == 1)
-      estaNaSequencia = true;
-
-    else
+    // Validação da entrada
+    while (entrada == null || !(long.TryParse(entrada, out numero)))
     {
-      while (numero >= sequencia[^1])
-      {
-        if (numero == sequencia[^1])
-        {
-          estaNaSequencia = true;
-          break;
-        }
-        else
-        {
-          int ultimoElemento = sequencia[sequencia.Count - 1];
-          int penultimoElemento = sequencia[sequencia.Count - 2];
-          sequencia.Add(ultimoElemento + penultimoElemento);
-        }
-      }
+      Console.WriteLine("Entrada inválida. Por favor, insira um número inteiro:");
+      entrada = Console.ReadLine();
+    }
+    if (entrada != null && long.TryParse(entrada, out numero))
+    {
+      ConfereSequencia(numero);
     }
 
-    if (estaNaSequencia)
-      Console.WriteLine($"O número {numero} está na sequência de Fibonacci");
-    else
-      Console.WriteLine($"O número {numero} não está na sequência de Fibonnaci");
+    void ConfereSequencia(long numero)
+    {
+      bool estaNaSequencia = false;
 
-    Console.WriteLine("----------");
+      List<long> sequencia = new List<long>() { 0, 1 };
+
+      if (numero == 0 || numero == 1)
+        estaNaSequencia = true;
+
+      else
+      {
+        while (numero >= sequencia[^1])
+        {
+          if (numero == sequencia[^1])
+          {
+            estaNaSequencia = true;
+            break;
+          }
+          else
+          {
+            long ultimoElemento = sequencia[sequencia.Count - 1];
+            long penultimoElemento = sequencia[sequencia.Count - 2];
+            sequencia.Add(ultimoElemento + penultimoElemento);
+          }
+        }
+      }
+
+      if (estaNaSequencia)
+        Console.WriteLine($"O número {numero} está na sequência de Fibonacci");
+      else
+        Console.WriteLine($"O número {numero} não está na sequência de Fibonnaci");
+
+      Console.WriteLine("----------");
+    }
   }
 
   static void TerceiraQuestao()
@@ -187,5 +201,45 @@ class Program
     }
 
     Console.WriteLine("---------");
+  }
+
+  static void QuintaQuestao()
+  {
+    Console.WriteLine("Questão 5:");
+    Console.WriteLine("insira um texto: ");
+
+    char[] charArray;
+    var entrada = Console.ReadLine();
+
+    // Validação da entrada
+    while (entrada == null || entrada == "")
+    {
+      Console.WriteLine("Entrada inválida. Por favor, insira um texto:");
+      entrada = Console.ReadLine();
+    }
+
+    if (entrada != null)
+    {
+      ReverteString(entrada);
+    }
+
+    void ReverteString(string entrada)
+    {
+      charArray = entrada.ToCharArray();
+
+      for (int i = 0; i < charArray.Length / 2; i++)
+      // "charArray.Length / 2" -> dividido por 2 para evitar que a reversão seja feita 2 vezes
+      {
+        char tmp = charArray[i];
+        charArray[i] = charArray[charArray.Length - i - 1];
+        charArray[charArray.Length - i - 1] = tmp;
+      }
+
+      string entradaReversa = new string(charArray);
+
+      Console.WriteLine(entradaReversa);
+    }
+
+    Console.WriteLine("----------");
   }
 }
