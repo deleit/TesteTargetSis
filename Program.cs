@@ -8,7 +8,8 @@ class Program
   {
     PrimeiraQuestao(13);
     SegundaQuestao();
-    TerceiraQuestão();
+    TerceiraQuestao();
+    QuartaQuestao();
   }
 
   static void PrimeiraQuestao(int indice)
@@ -28,13 +29,13 @@ class Program
 
   static void SegundaQuestao()
   {
-    Console.WriteLine("Questão 2: digite um número: ");
+    Console.WriteLine("Questão 2:");
+    Console.WriteLine("digite um número: ");
+
     var entrada = Console.ReadLine();
     int numero = 0;
     if (entrada != null)
-    {
       numero = int.Parse(entrada);
-    }
 
     bool estaNaSequencia = false;
 
@@ -42,6 +43,7 @@ class Program
 
     if (numero == 0 || numero == 1)
       estaNaSequencia = true;
+
     else
     {
       while (numero >= sequencia[^1])
@@ -68,12 +70,17 @@ class Program
     Console.WriteLine("----------");
   }
 
-  static void TerceiraQuestão()
+  static void TerceiraQuestao()
   {
-    string arquivoDados = File.ReadAllText("C:\\TesteTargetSis\\dados.json");
+    // Busca o caminho relativo
+    string sCurrentDirectory = AppDomain.CurrentDomain.BaseDirectory;
+    string sFile = System.IO.Path.Combine(sCurrentDirectory, @"..\..\..\dados.json");
+    string sFilePath = Path.GetFullPath(sFile);
+
+    string arquivoDados = File.ReadAllText(sFilePath);
     JArray jsonArray = JArray.Parse(arquivoDados);
 
-    // Encontra o maior fautramento
+    // Encontra o maior faturamento
     double maiorFaturamento = 0;
     int diaMaiorFaturamento = 0;
 
@@ -151,5 +158,34 @@ class Program
     Console.WriteLine($"O menor faturamento do mês foi {menorFaturamento}, no dia {diaMenorFaturamento}");
     Console.WriteLine($"Foram {diasMaioresQueMedia} dias com um faturamento maior do que a média mensal");
     Console.WriteLine("-----------");
+  }
+
+  static void QuartaQuestao()
+  {
+    Dictionary<string, double> faturamentos = new Dictionary<string, double>();
+    double faturamentoTotal = 0;
+
+    faturamentos.Add("SP", 67836.43);
+    faturamentos.Add("RJ", 36678.66);
+    faturamentos.Add("MG", 29229.88);
+    faturamentos.Add("ES", 27165.48);
+    faturamentos.Add("Outros", 19849.53);
+
+    foreach (double faturamento in faturamentos.Values)
+      faturamentoTotal += faturamento;
+
+    Console.WriteLine("Questão 4: ");
+
+    foreach (string estado in faturamentos.Keys)
+    {
+      double faturamento = faturamentos[estado];
+      double porcentagem = (faturamento / faturamentoTotal) * 100;
+      porcentagem = Math.Round(porcentagem, 2);
+
+      faturamentos[estado] = porcentagem;
+      Console.WriteLine($"{estado} - {porcentagem}%");
+    }
+
+    Console.WriteLine("---------");
   }
 }
