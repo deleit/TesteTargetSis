@@ -206,7 +206,7 @@ class Program
   static void QuintaQuestao()
   {
     Console.WriteLine("Questão 5:");
-    Console.WriteLine("insira um texto: ");
+    Console.WriteLine("Insira um texto: ");
 
     char[] charArray;
     var entrada = Console.ReadLine();
